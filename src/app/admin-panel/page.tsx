@@ -2,5 +2,5 @@
 
 export default function AdminPanel() {
 
-  return <div>123</div>;
+  return <div>1235678</div>;
 }
