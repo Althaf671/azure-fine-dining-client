@@ -11,5 +11,5 @@ export default function Home() {
           <Link href="/register">Register page</Link>
       </div>
     </>
-  )
+  );
 }

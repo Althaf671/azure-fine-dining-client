@@ -43,7 +43,7 @@ export async function handleRegister(name: string, email: string, password: stri
             'Content-Type': "application/json",
         },
         body: JSON.stringify({ name, email, password })
-    })
+    });
 
     if (res.ok) {
         devLog.success("Account registered")
@@ -51,6 +51,34 @@ export async function handleRegister(name: string, email: string, password: stri
     } else {
         devLog.failed("Resistration failed")
         toast.error("Registration failed")
+    }
+};
+
+//========== Get protected admin panel api ==========//
+/**
+    api admin panel dilindungi oleh middleware yang cek
+    token dan check roles, logic ini berfungsi untuk fetch
+    api admin panel yang dilindungi agar bisa di pakai di 
+    hook dan pages/layouts
+*/
+export async function getAdminPanel(token: string) {
+    // ambil api admin panel dan semua logic di dalamnya
+    const res = await fetch(`${API_URL}/api/admin-panel`, {
+        method: "GET",
+        headers: {
+            Authorization: `Bearer ${token}` // ini sesuai dengan logic di verifyAccessToken.ts
+        },
+    });
+
+    // deklarasi data(logic) api admin
+    const data = await res.json();
+
+    if(res.ok) {
+        devLog.success("protected admin panel api received");
+        return data; // return data sukses, data sudah diatur backend
+    } else {
+        devLog.failed("Failed to get the api")
+        return data; // return error, error sudah dihandle backend
     }
 };
 
