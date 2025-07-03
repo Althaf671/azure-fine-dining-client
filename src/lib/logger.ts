@@ -4,25 +4,23 @@
     dan mencegah DRY
 */
 
-import chalk from 'chalk';
+// tak ada chalk karena itu hanya untuk node
 
+// src/lib/logger.ts
 export const devLog = {
-    // console log success
-    success: (...args: any[]) => {
-        if (process.env.NODE_ENV === "development") {
-            console.log(chalk.green("✅", ...args))
-        }
-    },
-     // console log failed
-    failed: (...args: any[]) => {
-        if (process.env.NODE_ENV === "development") {
-            console.log(chalk.red("💥", ...args))
-        }
-    },
-     // console log warn
-    warn: (...args: any[]) => {
-        if (process.env.NODE_ENV === "development") {
-            console.log(chalk.yellow("⚠️", ...args))
-        }
-    }, 
+  success: (...args: any[]) => {
+    if (process.env.NODE_ENV === "development") {
+      console.log("[DEV]", ...args);
+    }
+  },
+  warn: (...args: any[]) => {
+    if (process.env.NODE_ENV === "development") {
+      console.warn("[DEV]", ...args);
+    }
+  },
+  failed: (...args: any[]) => {
+    if (process.env.NODE_ENV === "development") {
+      console.error("[DEV]", ...args);
+    }
+  },
 };
