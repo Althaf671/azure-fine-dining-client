@@ -3,46 +3,40 @@
 
 import { handleRegister } from "@take/lib/api";
 import { useRouter } from "next/navigation";
-import { useState } from "react"
 import SubmitButton from "../buttons/submitButton";
+import { registerSchema } from "@take/validators/auth.schema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import z from "zod";
 
 export default function RegisterForm() {
-    // deklarasi name, email, password
-    const [name, setName] = useState("");
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+    // deklarasi route
     const router = useRouter();
 
-    async function onSubmit(e: React.FormEvent) {
-        e.preventDefault();
-        await handleRegister(name, email, password);
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+    } = useForm<z.infer<typeof registerSchema>>({
+        resolver: zodResolver(registerSchema)
+    });
+
+    async function onSubmit(data: z.infer<typeof registerSchema>) {
+        await handleRegister(data.name, data.email, data.password);
         router.push("/login")
     };
 
     return(
-        <form onSubmit={onSubmit}>
-            <input 
-                type="text"
-                value={name}
-                onChange={e => setName(e.target.value)}
-                placeholder="name"
-                required
-            />
-            <input 
-                type="email"
-                value={email}
-                onChange={e => setEmail(e.target.value)}
-                placeholder="email"
-                required
-            />
-            <input 
-                type="password"
-                value={password}
-                onChange={e => setPassword(e.target.value)}
-                placeholder="password"
-                required
-            />           
+        <form onSubmit={handleSubmit(onSubmit)}>
+            <input {...register("name")} type="text" placeholder="Username" />
+            {errors.name&& <p>{errors.name.message}</p>}
+            <input {...register("email")} type="email" placeholder="Email" />
+            {errors.email&& <p>{errors.email.message}</p>}
+            <input {...register("password")} type="password" placeholder="Password" />
+            {errors.password&& <p>{errors.password.message}</p>}          
             <SubmitButton />
         </form>
     )
 }
+
+

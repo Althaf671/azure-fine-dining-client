@@ -2,48 +2,48 @@
 "use client";
 
 import { handleLogin } from "@take/lib/api";
-import { useState } from "react";
 import { useRouter } from "next/navigation";
 import SubmitButton from "../buttons/submitButton";
 import toast from "react-hot-toast";
 import { ROLES } from "@take/lib/roles.list";
+import { loginSchema } from "@take/validators/auth.schema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { useForm } from "react-hook-form";
 
 export default function LoginForm() {
-    // deklarasi email, password, dan route
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+    // deklarasi route
     const router = useRouter();
+
+    // form validation oleh zod
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+    } = useForm<z.infer<typeof loginSchema>>({
+        resolver: zodResolver(loginSchema)
+    });
     
     // panggil handleLogin
-    async function onSubmit(e: React.FormEvent) {
-        e.preventDefault();
-        const role = await handleLogin(email, password);
+    async function onSubmit(data: z.infer<typeof loginSchema>) {
+        console.log("FORM SUMBITTED: ", data)
+        const role = await handleLogin(data.email, data.password);
         if (role === ROLES.USER) {
-            toast.success("Welcome to Admin Dashboard")
+            toast.success("Welcome to Your Dashboard")
             router.push("/user-panel")
         } else {
-            toast.success("Welcome to Your Dashboard")
+            toast.success("Welcome to Admin Dashboard")
             router.push("/admin-panel")
         } 
     };
 
     return (
         <main>
-            <form onSubmit={onSubmit}>
-                <input
-                    type="email"
-                    value={email}
-                    onChange={e => setEmail(e.target.value)}
-                    placeholder="Email@example.com"
-                    required
-                />
-                <input
-                    type="password"
-                    value={password}
-                    onChange={e => setPassword(e.target.value)}
-                    placeholder="Password"
-                    required
-                />
+            <form onSubmit={handleSubmit(onSubmit)}>
+                <input {...register("email")} type="email" placeholder="Email" />
+                {errors.email&& <p>{errors.email.message}</p>}
+                <input {...register("password")} type="password" placeholder="Password" />
+                {errors.password&& <p>{errors.password.message}</p>}
                 <SubmitButton />
             </form>
         </main>
