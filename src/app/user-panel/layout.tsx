@@ -2,25 +2,24 @@
 "use client";
 
 import LoadingStateAnimation from "@take/components/loading";
-import { AdminPanelProvider } from "@take/context/provider";
 import { useProtectedPage } from "@take/hooks/useProtectedPage";
-import { getAdminPanel } from "@take/lib/api";
+import { getUserPanel } from "@take/lib/api";
 import { ROLES } from "@take/lib/roles.list";
-
+import { UserPanelProvider } from "../../context/provider";
 import { useCallback } from "react";
 
-export default function AdminPanelLayout({ children }: { children: React.ReactNode }) {
+export default function UserPanelLayout({ children }: { children: React.ReactNode }) {
     
-    const fetchUserData = useCallback(() => getAdminPanel(), []);
+    const fetchUserData = useCallback(() => getUserPanel(), []);
     // semua data dan loading state di pass ke children
-    const { data, loading } = useProtectedPage(fetchUserData, [ROLES.ADMIN, ROLES.SUPERADMIN]);
+    const { data, loading } = useProtectedPage(fetchUserData, [ROLES.USER]);
 
     // seluruh loading state dikombinasikan dengan animasi
     if (loading) return <LoadingStateAnimation />
 
     return (
-        <AdminPanelProvider value={data}>
+        <UserPanelProvider value={data}>
             {children}
-        </AdminPanelProvider>
+        </UserPanelProvider>
     )
-}
+};

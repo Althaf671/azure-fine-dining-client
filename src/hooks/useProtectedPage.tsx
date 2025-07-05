@@ -1,58 +1,72 @@
-// Hooks untuk dipakai di protected page khusus admin area
-/**
- * hook melakukan cek apakah user sudah punya token
- * lalu cek role user jika semua syarat tidak dipenuhi
- * maka protected route menolak permintaan masuk ke page
- */
+// Hooks untuk dipakai di protected page khusus admin/user area
 "uce client";
 
 import { devLog } from "@take/lib/logger";
-import { ROLES } from "@take/lib/roles.list";
 import { useRouter } from "next/navigation";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import toast from "react-hot-toast";
 
 /**
  *  NOTE:
  *  fetchDataFn adalah parameter untuk fetch data dari
- *  api admin panel (berisi middlewares, allowed roles) 
+ *  api protected panel (berisi middlewares, allowed roles) 
  *  yang lalu diberikan ke hook
  */
 
-export function useProtectedPage(fetchDataFn?: (token: string) => Promise<any>) {
-    const [data, setData] = useState<any>(null); // simpan data hasil fetch
+// data dari user/admin
+type UserResponse = {
+    message: string,
+    name: string,
+    email: string,
+    role: number,
+};
+
+export function useProtectedPage(
+    fetchDataFn?: () => Promise<UserResponse>,
+    allowedRoles: number[] = [], // roles dizinkan mengakses protected route tapi roles spesifik harus di tambahkan di page/layout
+) {
+    const [data, setData] = useState<UserResponse | null>(null); // simpan data hasil fetch
     const [loading, setLoading] = useState(true); // saat fetch berlangsung maka beri status loading
     const router = useRouter(); // deklarasi redirect
 
-    /**
-     * ambil dan simpan token dari localStorage 
-     * jika tidak ada maka toast error dan push
-     * user kemabli ke login page
-     */
-    useEffect(() => {
-        // ambil token untuk memenuhi syarat middleware VerifyAcessToken.ts
-        const token = localStorage.getItem("token");
-        if (!token) {
-            toast.error("Please login to continue");
-            router.push("/login");
-            return;
-        }
+    // gunakan useCallback untuk simpan memori fecthData
+    const fetchData = useCallback(() => {
         // ambil data allowed role dari backend, berhubungan dengan middleware checkRoles.ts
         if (fetchDataFn) {
-            fetchDataFn(token).then(res => {
-                if(res && (res.role === ROLES.ADMIN || res.role === ROLES.SUPERADMIN )) {
-                    setData(res); // data hasil fetch diproses 
+            fetchDataFn().then(res => {
+                // semua role diizinkan
+                if(res && 
+                    (allowedRoles.length === 0 || allowedRoles.includes(res.role))
+                ) {
+                    // return data user/admin panel
+                    setData((prev) => {
+                        if (JSON.stringify(prev) !==
+                    JSON.stringify(res)) return res;
+                    return prev; // jika data sudah pernah direturn maka return data itu, bukan data baru, ini mencegah loop
+                }); // data hasil fetch diproses 
                 } else {
                     toast.error('Access denied');
-                    devLog.failed("Acess to admin area denied");
+                    devLog.failed("Acess to this area denied");
                     router.push("/login"); // tidak dapat izin dan redirect ke login page
+
                 }
                 setLoading(false); // fetch data selesai, baik error maupun tidak dan loading state jadi false
             });
         } else {
             setLoading(false); // tidak ada fetch maka tidak ada loading
         }
-    }, [router, fetchDataFn]);
+    }, [router, fetchDataFn, allowedRoles]);
+
+    // cegah pemanggil hook yang lebih dari sekali
+    const hasFatchedRef = useRef(false);
+
+    useEffect(() => {
+        if (hasFatchedRef.current) return;
+        hasFatchedRef.current = true; 
+
+        // jalankan fungsi fetch data di atas
+        fetchData();
+    }, [fetchData]);
 
     return { data, loading };
-}
+};
