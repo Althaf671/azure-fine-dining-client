@@ -17,6 +17,7 @@ export async function handleLogin(email: string, password: string) {
             'Content-Type': 'application/json', // payload berbentuk JSON
         },
         body: JSON.stringify({ email, password }), // isi payload
+        credentials: "include"
     });
 
     // deklarasi data berisi res
@@ -24,8 +25,7 @@ export async function handleLogin(email: string, password: string) {
 
     if (res.ok) {
         devLog.success("Login success!", data.accessToken);
-        toast.success("You are in!")
-        localStorage.setItem('token', data.accessToken); // token saved to localstorage
+        return data.user.role; // return role agar bisa dipakai untuk split login route admin-user
     } else {
         toast.error("Login failed")
         devLog.failed("Login failed")
@@ -42,7 +42,8 @@ export async function handleRegister(name: string, email: string, password: stri
         headers: {
             'Content-Type': "application/json",
         },
-        body: JSON.stringify({ name, email, password })
+        body: JSON.stringify({ name, email, password }),
+        credentials: "include"
     });
 
     if (res.ok) {
@@ -61,13 +62,11 @@ export async function handleRegister(name: string, email: string, password: stri
     api admin panel yang dilindungi agar bisa di pakai di 
     hook dan pages/layouts
 */
-export async function getAdminPanel(token: string) {
+export async function getAdminPanel() {
     // ambil api admin panel dan semua logic di dalamnya
     const res = await fetch(`${API_URL}/api/admin-panel`, {
         method: "GET",
-        headers: {
-            Authorization: `Bearer ${token}` // ini sesuai dengan logic di verifyAccessToken.ts
-        },
+        credentials: "include"
     });
 
     // deklarasi data(logic) api admin
@@ -75,6 +74,24 @@ export async function getAdminPanel(token: string) {
 
     if(res.ok) {
         devLog.success("protected admin panel api received");
+        return data; // return data sukses, data sudah diatur backend
+    } else {
+        devLog.failed("Failed to get the api")
+        return data; // return error, error sudah dihandle backend
+    }
+};
+
+//========== Get protected user panel api ==========//
+export async function getUserPanel() {
+    const res = await fetch(`${API_URL}/api/user-panel`, {
+        method: "GET",
+        credentials: "include"
+    });
+
+    const data = await res.json();
+
+    if(res.ok) {
+        devLog.success("protected user panel api received");
         return data; // return data sukses, data sudah diatur backend
     } else {
         devLog.failed("Failed to get the api")

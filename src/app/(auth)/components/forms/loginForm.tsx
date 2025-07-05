@@ -5,6 +5,8 @@ import { handleLogin } from "@take/lib/api";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import SubmitButton from "../buttons/submitButton";
+import toast from "react-hot-toast";
+import { ROLES } from "@take/lib/roles.list";
 
 export default function LoginForm() {
     // deklarasi email, password, dan route
@@ -15,9 +17,15 @@ export default function LoginForm() {
     // panggil handleLogin
     async function onSubmit(e: React.FormEvent) {
         e.preventDefault();
-        await handleLogin(email, password)
-        router.push("/")
-    }
+        const role = await handleLogin(email, password);
+        if (role === ROLES.USER) {
+            toast.success("Welcome to Admin Dashboard")
+            router.push("/user-panel")
+        } else {
+            toast.success("Welcome to Your Dashboard")
+            router.push("/admin-panel")
+        } 
+    };
 
     return (
         <main>
