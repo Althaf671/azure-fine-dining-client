@@ -6,7 +6,7 @@ import { devLog } from "./logger";
 import axios from "axios";
 import axiosClient from "./axiosClient";
 
-//========== Get login endpoint dan handle login ==========//
+//========== ambil login endpoint(POST) dan handle login ==========//
 export async function handleLogin(email: string, password: string) {
 
     /**
@@ -28,7 +28,7 @@ export async function handleLogin(email: string, password: string) {
 };
 
 
-//========== Get Register endpoint dan handle Register ==========//
+//========== ambil Register endpoint(POST) dan handle Register ==========//
 export async function handleRegister(name: string, email: string, password: string) {
 
     /**
@@ -48,7 +48,7 @@ export async function handleRegister(name: string, email: string, password: stri
     }
 };
 
-//========== Get protected admin panel api ==========//
+//========== ambil protected admin panel api(GET) ==========//
 /**
     api admin panel dilindungi oleh middleware yang cek
     token dan check roles, logic ini berfungsi untuk fetch
@@ -70,7 +70,7 @@ export async function getAdminPanel() {
     }
 };
 
-//========== Get protected user panel api ==========//
+//========== ambil protected user panel api(GET) ==========//
 export async function getUserPanel() {
 
     try {
@@ -83,6 +83,21 @@ export async function getUserPanel() {
         } else {
             toast.error("Unexpected error")
         }
+    }
+};
+
+//==========  ambil refresh token api(POST) ==========//
+export async function getRefreshToken() {
+    try {
+        const res = await axiosClient.post("/refresh-token");
+        devLog.success("Success to connect with refresh token endpoint");
+        return res.data;
+    } catch (err: unknown) {
+        if (axios.isAxiosError(err)) {
+            toast.error(err.response?.data?.message || "failed to connect with this endpoint")
+        } else {
+            toast.error("Unexpected error")
+        }     
     }
 };
 

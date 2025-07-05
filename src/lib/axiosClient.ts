@@ -23,6 +23,8 @@ axiosClient.interceptors.request.use(
         // deklarasi csrfToken, getCookie(.ts) mengambil crsf_token
         const csrfToken = getCookie("csrf_token");
 
+        // NOTE: axiosClient belum terhubung dengan refreshToken API
+
         if (csrfToken && config.method !== "get") {
             config.headers["x-csrf-token"] = csrfToken;
         }
