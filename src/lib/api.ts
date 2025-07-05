@@ -3,32 +3,27 @@
 
 import toast from "react-hot-toast";
 import { devLog } from "./logger";
-
-// Backend API url
-const API_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
+import axios from "axios";
+import axiosClient from "./axiosClient";
 
 //========== Get login endpoint dan handle login ==========//
 export async function handleLogin(email: string, password: string) {
 
-    // deklarasi res dengan isi di bawah
-    const res = await fetch(`${API_URL}/api/login`, {
-        method: 'POST', // method agar FE mengirim payload input 
-        headers: {
-            'Content-Type': 'application/json', // payload berbentuk JSON
-        },
-        body: JSON.stringify({ email, password }), // isi payload
-        credentials: "include"
-    });
-
-    // deklarasi data berisi res
-    const data = await res.json();
-
-    if (res.ok) {
-        devLog.success("Login success!", data.accessToken);
-        return data.user.role; // return role agar bisa dipakai untuk split login route admin-user
-    } else {
-        toast.error("Login failed")
-        devLog.failed("Login failed")
+    /**
+        axiosClient berisi method, headers, dan body.
+        saat user isi form input dan submit maka fungsi ini
+        akan POST hasilnya ke backend untuk diverifikasi.
+    */
+    try {
+        const res = await axiosClient.post("/login", { email, password })
+        devLog.success("Login success!", res.data.accessToken);
+        return res.data.user.role; // return role agar bisa dipakai untuk split login route admin-user
+    } catch (err: unknown) {
+        if (axios.isAxiosError(err)) {
+            toast.error(err.response?.data?.message || "Login failed")
+        } else {
+            toast.error("Unexpected error")
+        }
     }
 };
 
@@ -36,22 +31,20 @@ export async function handleLogin(email: string, password: string) {
 //========== Get Register endpoint dan handle Register ==========//
 export async function handleRegister(name: string, email: string, password: string) {
 
-    // deklarasi res
-    const res = await fetch(`${API_URL}/api/register`, {
-        method: "POST",
-        headers: {
-            'Content-Type': "application/json",
-        },
-        body: JSON.stringify({ name, email, password }),
-        credentials: "include"
-    });
-
-    if (res.ok) {
+    /**
+        Axios POST hasil input/payload ke backend dengan
+        payload: name, emai, password
+    */
+    try {
+        await axiosClient.post("/register", { name, email, password })
         devLog.success("Account registered")
         toast.success("Account registered!")
-    } else {
-        devLog.failed("Resistration failed")
-        toast.error("Registration failed")
+    } catch (err: unknown) {
+        if (axios.isAxiosError(err)) {
+            toast.error(err.response?.data?.message || "Registration failed")
+        } else {
+            toast.error("Unexpected error")
+        }
     }
 };
 
@@ -63,39 +56,33 @@ export async function handleRegister(name: string, email: string, password: stri
     hook dan pages/layouts
 */
 export async function getAdminPanel() {
-    // ambil api admin panel dan semua logic di dalamnya
-    const res = await fetch(`${API_URL}/api/admin-panel`, {
-        method: "GET",
-        credentials: "include"
-    });
-
-    // deklarasi data(logic) api admin
-    const data = await res.json();
-
-    if(res.ok) {
+    // axiosClient dengan method GET
+    try {
+        const res = await axiosClient.get("/admin-panel"); // deklarasi res yang berisi data dari admin.route.ts
         devLog.success("protected admin panel api received");
-        return data; // return data sukses, data sudah diatur backend
-    } else {
-        devLog.failed("Failed to get the api")
-        return data; // return error, error sudah dihandle backend
+        return res.data; // return data sukses, data sudah diatur backend/admin.route.ts
+    } catch (err: unknown) {
+        if (axios.isAxiosError(err)) {
+            toast.error(err.response?.data?.message || "Access denied")
+        } else {
+            toast.error("Unexpected error")
+        }
     }
 };
 
 //========== Get protected user panel api ==========//
 export async function getUserPanel() {
-    const res = await fetch(`${API_URL}/api/user-panel`, {
-        method: "GET",
-        credentials: "include"
-    });
 
-    const data = await res.json();
-
-    if(res.ok) {
+    try {
+        const res = await axiosClient.get("/user-panel");
         devLog.success("protected user panel api received");
-        return data; // return data sukses, data sudah diatur backend
-    } else {
-        devLog.failed("Failed to get the api")
-        return data; // return error, error sudah dihandle backend
+        return res.data; // return data sukses, data sudah diatur backend
+    } catch (err: unknown) {
+        if (axios.isAxiosError(err)) {
+            toast.error(err.response?.data?.message || "Access denied")
+        } else {
+            toast.error("Unexpected error")
+        }
     }
 };
 
