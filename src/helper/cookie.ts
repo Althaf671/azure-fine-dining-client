@@ -1,5 +1,5 @@
-/** cookie.ts frontend berguna agar frontend dapat mengambil isi cookie, lihat csrf.route.ts
-    httpOnly 
+/** cookie.ts frontend berguna agar frontend dapat mengambil isi cookie
+    dari browser headers, csrf token sudah di generate di backend
 */
 
 export default function getCookie(name: string): string | null {
