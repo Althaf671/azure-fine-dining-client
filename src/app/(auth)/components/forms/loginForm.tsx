@@ -4,7 +4,6 @@
 import { handleLogin } from "@take/lib/api";
 import { useRouter } from "next/navigation";
 import SubmitButton from "../buttons/submitButton";
-import toast from "react-hot-toast";
 import { ROLES } from "@take/lib/roles.list";
 import { loginSchema } from "@take/validators/auth.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -27,11 +26,13 @@ export default function LoginForm() {
     // panggil handleLogin
     async function onSubmit(data: z.infer<typeof loginSchema>) {
         const role = await handleLogin(data.email, data.password);
+
+        // jika login gagal maka return
+        if (!role) return;
+
         if (role === ROLES.USER) {
-            toast.success("Welcome to Your Dashboard")
             router.push("/user-panel")
         } else {
-            toast.success("Welcome to Admin Dashboard")
             router.push("/admin-panel")
         } 
     };
