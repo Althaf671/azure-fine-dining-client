@@ -1,6 +1,7 @@
 // pages/admin-panel.tsx
 "use client" // test
 
+import LogoutButton from "@take/components/buttons/logoutButton";
 import { useAdminPanel } from "@take/context/provider";
 import { ROLE_LABEL } from "@take/lib/roles.list";
 
@@ -16,6 +17,7 @@ export default function AdminPanel() {
           <p>Role: {ROLE_LABEL[admin.role]}</p>
           <p>name: {admin.name}</p>
           <p>email: {admin.email}</p>
+          <LogoutButton />
         </div>
       )}
     </div>

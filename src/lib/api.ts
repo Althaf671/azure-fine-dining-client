@@ -86,7 +86,7 @@ export async function getUserPanel() {
     }
 };
 
-//==========  ambil refresh token api(POST) ==========//
+//==========  ambil refresh token api/token rotation (POST) ==========//
 export async function getRefreshToken() {
     try {
         const res = await axiosClient.post("/refresh-token");
@@ -100,5 +100,23 @@ export async function getRefreshToken() {
         }     
     }
 };
+
+//==========  ambil logout api/endpoint (POST) ==========//
+export async function handleLogout() {
+    try {
+        const res = await axiosClient.post("/logout");
+        toast.success("Logged out successfuly")
+        devLog.success("You have logout");
+        return res.data; // JSON message dan status sudah ada di backend
+    } catch (err: unknown) {
+        if (axios.isAxiosError(err)) {
+            toast.error(err.response?.data?.message || "Logout failed")
+        } else {
+            toast.error("Unexpected error")
+        }       
+    }
+};
+
+
 
 

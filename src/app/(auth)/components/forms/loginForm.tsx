@@ -26,7 +26,6 @@ export default function LoginForm() {
     
     // panggil handleLogin
     async function onSubmit(data: z.infer<typeof loginSchema>) {
-        console.log("FORM SUMBITTED: ", data)
         const role = await handleLogin(data.email, data.password);
         if (role === ROLES.USER) {
             toast.success("Welcome to Your Dashboard")

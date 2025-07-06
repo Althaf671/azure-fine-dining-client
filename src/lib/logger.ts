@@ -8,17 +8,17 @@
 
 // src/lib/logger.ts
 export const devLog = {
-  success: (...args: any[]) => {
+  success: (...args: unknown[]) => {
     if (process.env.NODE_ENV === "development") {
       console.log("[DEV]", ...args);
     }
   },
-  warn: (...args: any[]) => {
+  warn: (...args: unknown[]) => {
     if (process.env.NODE_ENV === "development") {
       console.warn("[DEV]", ...args);
     }
   },
-  failed: (...args: any[]) => {
+  failed: (...args: unknown[]) => {
     if (process.env.NODE_ENV === "development") {
       console.error("[DEV]", ...args);
     }
