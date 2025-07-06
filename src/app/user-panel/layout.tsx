@@ -17,6 +17,11 @@ export default function UserPanelLayout({ children }: { children: React.ReactNod
     // seluruh loading state dikombinasikan dengan animasi
     if (loading) return <LoadingStateAnimation />
 
+    // jika link dicoba dibuka paksa tanpa login atau bukan role bersangkutan maka access denied
+    if (!data) {
+        return null;
+    };
+
     return (
         <UserPanelProvider value={data}>
             {children}

@@ -4,7 +4,6 @@
 import { devLog } from "@take/lib/logger";
 import { useRouter } from "next/navigation";
 import { useState, useEffect, useCallback, useRef } from "react";
-import toast from "react-hot-toast";
 
 /**
  *  NOTE:
@@ -45,7 +44,6 @@ export function useProtectedPage(
                     return prev; // jika data sudah pernah direturn maka return data itu, bukan data baru, ini mencegah loop
                 }); // data hasil fetch diproses 
                 } else {
-                    toast.error('Access denied');
                     devLog.failed("Acess to this area denied");
                     router.push("/login"); // tidak dapat izin dan redirect ke login page
 

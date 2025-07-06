@@ -20,11 +20,21 @@ export async function handleLogin(email: string, password: string) {
         return res.data.user.role; // return role agar bisa dipakai untuk split login route admin-user
     } catch (err: unknown) {
         if (axios.isAxiosError(err)) {
-            toast.error(err.response?.data?.message || "Login failed")
+            const status = err.response?.status;
+
+            if (status === 429) {
+                toast.error("Calm down! You're hitting the limit.")
+            } else {
+                setTimeout(() => {
+                    toast.error(err.response?.data?.message || "Login failed")
+                })
+            }
+
         } else {
             toast.error("Unexpected error")
         }
     }
+    return undefined;
 };
 
 
@@ -38,10 +48,14 @@ export async function handleRegister(name: string, email: string, password: stri
     try {
         await axiosClient.post("/register", { name, email, password })
         devLog.success("Account registered")
-        toast.success("Account registered!")
+        setTimeout(() => {
+            toast.success("Account registered", { duration: 3000 })
+        })
     } catch (err: unknown) {
         if (axios.isAxiosError(err)) {
-            toast.error(err.response?.data?.message || "Registration failed")
+            setTimeout(() => {
+                toast.error(err.response?.data?.message || "Registration failed")
+            })
         } else {
             toast.error("Unexpected error")
         }
@@ -59,11 +73,16 @@ export async function getAdminPanel() {
     // axiosClient dengan method GET
     try {
         const res = await axiosClient.get("/admin-panel"); // deklarasi res yang berisi data dari admin.route.ts
+        setTimeout(() => {
+            toast.success("Welcome to admin dashboard", { duration: 3000 })
+        })
         devLog.success("protected admin panel api received");
         return res.data; // return data sukses, data sudah diatur backend/admin.route.ts
     } catch (err: unknown) {
         if (axios.isAxiosError(err)) {
+        setTimeout(() => {
             toast.error(err.response?.data?.message || "Access denied")
+        })
         } else {
             toast.error("Unexpected error")
         }
@@ -74,12 +93,17 @@ export async function getAdminPanel() {
 export async function getUserPanel() {
 
     try {
-        const res = await axiosClient.get("/user-panel");
+        const res = await axiosClient.get("/user-panel"); // fetch endpoint
+        setTimeout(() => {
+            toast.success("Welcome to your dashboard", { duration: 3000 })
+        })
         devLog.success("protected user panel api received");
         return res.data; // return data sukses, data sudah diatur backend
     } catch (err: unknown) {
         if (axios.isAxiosError(err)) {
-            toast.error(err.response?.data?.message || "Access denied")
+            setTimeout(() => {
+                toast.error(err.response?.data?.message || "Access denied")
+            })
         } else {
             toast.error("Unexpected error")
         }
@@ -94,7 +118,7 @@ export async function getRefreshToken() {
         return res.data;
     } catch (err: unknown) {
         if (axios.isAxiosError(err)) {
-            toast.error(err.response?.data?.message || "failed to connect with this endpoint")
+            devLog.failed(err.response?.data?.message || "failed to connect with this endpoint")
         } else {
             toast.error("Unexpected error")
         }     
@@ -105,7 +129,9 @@ export async function getRefreshToken() {
 export async function handleLogout() {
     try {
         const res = await axiosClient.post("/logout");
-        toast.success("Logged out successfuly")
+        setTimeout(() => {
+            toast.success("Logged out succesfully", { duration: 3000 })
+        });
         devLog.success("You have logout");
         return res.data; // JSON message dan status sudah ada di backend
     } catch (err: unknown) {
