@@ -22,8 +22,8 @@ export default function RegisterForm() {
     });
 
     async function onSubmit(data: z.infer<typeof registerSchema>) {
-        await handleRegister(data.name, data.email, data.password);
-        router.push("/login")
+        const token = await handleRegister(data.name, data.email, data.password);
+        router.push(`/verify-email/${token}`) 
     };
 
     return(

@@ -6,6 +6,47 @@ import { devLog } from "./logger";
 import axios from "axios";
 import axiosClient from "./axiosClient";
 
+//========== ambil Register endpoint(POST) dan handle Register ==========//
+export async function handleRegister(name: string, email: string, password: string) {
+
+    /**
+        Axios POST hasil input/payload ke backend dengan
+        payload: name, emai, password
+    */
+    try {
+        const res = await axiosClient.post("/register", { name, email, password })
+        devLog.success("Account registered")
+        setTimeout(() => {
+            toast.success("Account registered", { duration: 3000 })
+        });
+        return res.data.verificationToken;
+    } catch (err: unknown) {
+        if (axios.isAxiosError(err)) {
+            setTimeout(() => {
+                toast.error(err.response?.data?.message || "Registration failed", { duration: 3000 })
+            })
+        } else {
+            toast.error("Unexpected error")
+        }
+    }
+};
+
+//========== ambil verify email endpoint(POST) ==========//
+export async function handleVerifyEmail(token: string) {
+    try {
+        const res = await axiosClient.get(`/verify-email/${token}`); // panggil route
+        return res.data;
+    } catch (err: unknown) {
+        if (axios.isAxiosError(err)) {
+            setTimeout(() => {
+                toast.error(err.response?.data?.message || "Verification failed", { duration: 3000 })
+            })
+        } else {
+            toast.error("Unexpected error")
+        }
+    }
+};
+
 //========== ambil login endpoint(POST) dan handle login ==========//
 export async function handleLogin(email: string, password: string) {
 
@@ -35,31 +76,6 @@ export async function handleLogin(email: string, password: string) {
         }
     }
     return undefined;
-};
-
-
-//========== ambil Register endpoint(POST) dan handle Register ==========//
-export async function handleRegister(name: string, email: string, password: string) {
-
-    /**
-        Axios POST hasil input/payload ke backend dengan
-        payload: name, emai, password
-    */
-    try {
-        await axiosClient.post("/register", { name, email, password })
-        devLog.success("Account registered")
-        setTimeout(() => {
-            toast.success("Account registered", { duration: 3000 })
-        })
-    } catch (err: unknown) {
-        if (axios.isAxiosError(err)) {
-            setTimeout(() => {
-                toast.error(err.response?.data?.message || "Registration failed")
-            })
-        } else {
-            toast.error("Unexpected error")
-        }
-    }
 };
 
 //========== ambil protected admin panel api(GET) ==========//
