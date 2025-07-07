@@ -1,0 +1,16 @@
+// For fonts/text
+@use '../abstracts/index' as *;
+
+body {
+  font-family: $font-body;
+  line-height: 1.6;
+}
+
+h1 {
+    font-family: var(--font-roboto), monospace;
+}
+
+h2 {
+  font-weight: bold;
+  font-family: var(--font-merriweather), serif;
+}
