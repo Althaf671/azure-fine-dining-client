@@ -1,0 +1,32 @@
+@use '../../abstracts/index' as *;
+@use '../../base/index' as *;
+
+.otp__form {
+    @include flex-column;
+    justify-content: center;
+    align-items: center;
+
+    .otp__container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 40vh;
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+    }
+
+    .error__text {
+        color: red;
+        text-align: center;
+        margin-top: 8px;
+    }
+
+    .additional__info {
+        padding: 10px 10vw;
+        color: $accent-color;
+        opacity: 70%;
+        margin-top: 2rem;
+        text-align: center;
+    }
+}
