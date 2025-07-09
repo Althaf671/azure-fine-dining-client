@@ -3,38 +3,10 @@
 
 html {
   scroll-behavior: auto !important;
+  background-color: $primary-color;
 }
 
-body {
-  background: radial-gradient(ellipse at center, rgb(80, 14, 13), rgb(14, 14, 14));
-  color: $secondary-color;
-  user-select: none;
-  -webkit-user-select: none;
-  min-height: 100vh;
+button, a {
+  cursor: pointer;
 }
 
-button,
-a,
-.sidebar__btn {
-  -webkit-tap-highlight-color: transparent; 
-  -webkit-focus-ring-color: transparent;
-  outline: none; 
-}
-
-@keyframes rotateBorder {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
-@keyframes slideOut {
-  0% {
-    transform: translateX(-100%);
-  }
-  100% {
-    transform: translateX(0%);
-  }
-}

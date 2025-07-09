@@ -6,8 +6,12 @@ import { z } from 'zod';
     yang akan divalidasi oleh zod 
  */
 export const registerSchema = z.object({
-    name: z.string().max(12, { message: "12 character max" }), // name validation
-    email: z.string().email({ message: "Invalid email format" }), // email validation
+    name: z.string({ required_error: "Name is required" }) // name validation
+    .min(1, { message: "Username is required" })
+    .max(12, { message: "Max 12 characters allowed" }), 
+    email: 
+    z.string().min(1, { message: "Email is required" }) // email validation
+    .email({ message: "Invalid email format" }), // email validation
     password: 
     z.string().min(8, { message: "Password must be atleast 8 characters"}) // password validation
     .refine(val => /[A-Z]/.test(val), { message: "Password must be atleast 1 capital letter"}) // hurus terdiri dari 1 huruf kapital
