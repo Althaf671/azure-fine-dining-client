@@ -1,14 +1,12 @@
 // Login button
-"use client"
 
-export default function SubmitButton() {
-
-
+export default function LoginButton() {
     return (
         <button
             type="submit"
         >
-            Login to access
+            Login 
         </button>
     )
-}
+};
+

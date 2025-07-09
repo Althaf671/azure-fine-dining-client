@@ -1,0 +1,139 @@
+@use '../../abstracts/index' as *;
+@use '../../base/index' as *;
+
+.register__from__container {
+    @include flex-row;
+    height: 100%;
+    overflow-y: hidden;
+
+    .auth__page__image__wrapper {
+        position: relative;
+        width: 69vw;
+        height: 100vh;
+
+        .auth__page__image {
+            filter: brightness(80%);
+            object-fit: cover;
+            width: 69vw;
+            height: 100vh;
+        }
+    }
+
+    .register__form {
+        @include flex-column;
+        width: 31vw;
+        margin: 7rem 3.5rem 0 3.5rem;
+
+        h2 {
+            @include font-size-h2;
+            text-align: left;
+            font-family: $font-family-poppins;
+            color: $secondary-color;
+            margin-bottom: 1.5rem
+        }
+
+        .input__area {
+            @include flex-column;
+            width: 100%;
+            height: 5rem;
+            margin-top: 0.25rem;
+
+            .input__box {
+                position: relative;
+                width: 100%;
+                height: 3rem;
+
+                .input__icon {
+                    position: absolute;
+                    right: 10px;
+                    top: 10px;
+                    opacity: 80%;
+                }
+
+                input {
+                    border: none;
+                    border-radius: 1px;
+                    width: 100%;
+                    height: 3rem;
+                    @include font-size-button;
+                    font-family: $font-family-poppins;
+                    padding: 5px 10px;
+                    outline: none;
+                }
+            }
+
+            p {
+                color: red;
+                @include font-size-caption;
+                font-family: $font-family-poppins;
+                letter-spacing: 0.3px;
+                margin-top: 0.5px;
+            }
+        }
+
+        .checklist__additional {
+            @include flex-row;
+            gap: 5px;
+            margin-bottom: 7px;
+            align-items: center;
+
+            label {
+                @include font-size-caption;
+                font-family: $font-family-poppins;
+            }
+
+            input {
+                outline: none;
+                cursor: pointer;
+            }
+        }
+
+        .submit__button {
+            @include flex-column;
+            justify-content: center;
+        }
+
+        .additional__menu {
+            text-align: center;
+            margin: 0.5rem 0;
+            font-family: $font-family-poppins;
+            @include font-size-information;
+            color: $accent-color;
+
+            span {
+                text-decoration: none;
+            }
+
+            a {
+                text-decoration: underline;
+            }
+        }
+
+        .line {
+            @include flex-row;
+            align-items: center;
+            margin: 1rem 0;
+
+            .hr__left {
+                width: 100%;
+                height: 1.5px;
+                background-color: $accent-color;
+                border: none;
+                margin-left: 50px;
+            }
+
+            .hr__right {
+                width: 100%;
+                height: 1.5px;
+                background-color: $accent-color;
+                border: none;
+                margin-right: 50px;
+            }
+
+            span {
+                padding: 0 10px;
+                font-family: $font-family-poppins;
+            }
+        }
+    }
+}

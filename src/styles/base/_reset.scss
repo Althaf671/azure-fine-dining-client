@@ -10,23 +10,9 @@
   box-sizing: border-box;
 }
 
-li, a {
-  display: flex;
-  list-style: none;
+a, li {
   text-decoration: none;
-  color: $secondary-color;
-  font-size: $font-merri;
-  justify-content: start;
-  align-items: center;
-  gap: 8px;
-  margin: 5px 0;
+  color: $accent-color;
 }
 
-button {
-  cursor: pointer;
-  border: none;
-  background: none;
-  font-family: $font-body;
-  font-size: 1rem;
-  padding: none;
-}
+

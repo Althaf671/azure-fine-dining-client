@@ -3,12 +3,12 @@
 
 import { handleLogin } from "@take/lib/api";
 import { useRouter } from "next/navigation";
-import SubmitButton from "../buttons/submitButton";
 import { ROLES } from "@take/lib/roles.list";
 import { loginSchema } from "@take/validators/auth.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
+import LoginButton from "../buttons/loginButton";
 
 export default function LoginForm() {
     // deklarasi route
@@ -40,11 +40,15 @@ export default function LoginForm() {
     return (
         <main>
             <form onSubmit={handleSubmit(onSubmit)}>
-                <input {...register("email")} type="email" placeholder="Email" />
-                {errors.email&& <p>{errors.email.message}</p>}
-                <input {...register("password")} type="password" placeholder="Password" />
-                {errors.password&& <p>{errors.password.message}</p>}
-                <SubmitButton />
+                <div className="input__area">
+                    <input {...register("email")} type="email" placeholder="Email" />
+                    {errors.email&& <p>{errors.email.message}</p>}
+                </div>
+                <div className="input__area">
+                    <input {...register("password")} type="password" placeholder="Password" />
+                    {errors.password&& <p>{errors.password.message}</p>}
+                </div>
+                <LoginButton />
             </form>
         </main>
     )

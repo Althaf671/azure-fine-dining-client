@@ -1,14 +1,13 @@
 // For color, font-size, and other variables
 
-$primary-color: #0f0000;
-$secondary-color: #ededed;
-$accent-color: #5d0f0e;
+// color variables
+$primary-color: #F0E7D5; // vanilla cream
+$secondary-color: #212842; // midnight indigo
+$accent-color: #383838; // for buttons, links, and highlights
 
-$font-body: 'Crimson Pro', serif;
-$font-heading: var(--font-dm-sans), sans-serif;
-$font-merri: var(--font-merriweather), serif;
-$font-mono: var(--font-roboto), monospace;
-
+// base font
+$font-family-poppins: var(--font-poppins), serif;
+$font-family-lora: var(--font-lora), monospace;
 
 
 $spacing-sm: 8px;

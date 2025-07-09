@@ -32,9 +32,9 @@ export async function handleRegister(name: string, email: string, password: stri
 };
 
 //========== ambil verify email endpoint(POST) ==========//
-export async function handleVerifyEmail(token: string) {
+export async function handleVerifyEmail(otp: string) {
     try {
-        const res = await axiosClient.get(`/verify-email/${token}`); // panggil route
+        const res = await axiosClient.post(`/verify-email`, { otp }); // panggil route
         return res.data;
     } catch (err: unknown) {
         if (axios.isAxiosError(err)) {
@@ -42,7 +42,7 @@ export async function handleVerifyEmail(token: string) {
                 toast.error(err.response?.data?.message || "Verification failed", { duration: 3000 })
             })
         } else {
-            toast.error("Unexpected error")
+            toast.error("Unexpected error");
         }
     }
 };
