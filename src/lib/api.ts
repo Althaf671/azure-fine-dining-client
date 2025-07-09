@@ -19,7 +19,7 @@ export async function handleRegister(name: string, email: string, password: stri
         setTimeout(() => {
             toast.success("Account registered", { duration: 3000 })
         });
-        return res.data.verificationToken;
+        return res.data;
     } catch (err: unknown) {
         if (axios.isAxiosError(err)) {
             setTimeout(() => {
@@ -28,6 +28,7 @@ export async function handleRegister(name: string, email: string, password: stri
         } else {
             toast.error("Unexpected error")
         }
+        return null; // jika error, return null
     }
 };
 

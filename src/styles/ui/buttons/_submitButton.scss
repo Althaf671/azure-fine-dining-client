@@ -1,6 +1,38 @@
 @use '../../base/index' as *;
 @use '../../abstracts//index' as *;
 
+.submitOnly__button {
+    position: relative;
+    justify-content: center;
+    align-items: center;
+    width: 12.5vw;
+    height: 3.5rem;
+    padding: 1rem 0;
+    background-color: $secondary-color;
+    color: $primary-color;
+    border: none;
+    border-radius: 1px;
+    margin-top: 20px;
+    @include font-size-button;
+    font-family: $font-family-poppins;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    letter-spacing: 2.5px;
+
+    .loadingState2 {
+        position: absolute; 
+        width: 10vw;
+        height: 3.5rem; 
+        top: 50%;
+        left: 50%; 
+        transform: translate(-50%, -50%);
+    }
+    
+    &:hover {
+        background-color: darken($accent-color, 10%);
+    }
+}
+
 .register__button {
     position: relative;
     justify-content: center;

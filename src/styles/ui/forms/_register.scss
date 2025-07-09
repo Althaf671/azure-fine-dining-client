@@ -29,35 +29,43 @@
             text-align: left;
             font-family: $font-family-poppins;
             color: $secondary-color;
-            margin-bottom: 1.5rem
+            margin-bottom: 1.5rem;
+            line-height: 1.3;
         }
 
         .input__area {
             @include flex-column;
             width: 100%;
-            height: 5rem;
+            height: 5.75rem;
             margin-top: 0.25rem;
+
+            label {
+                @include font-size-information;
+            }
 
             .input__box {
                 position: relative;
                 width: 100%;
                 height: 3rem;
+                align-items: center;
+                background-color: white;
+                @include flex-row;
 
                 .input__icon {
                     position: absolute;
-                    right: 10px;
-                    top: 10px;
                     opacity: 80%;
+                    border: none;
+                    margin: 0 10px;
                 }
 
                 input {
                     border: none;
                     border-radius: 1px;
-                    width: 100%;
+                    width: 90%;
                     height: 3rem;
                     @include font-size-button;
                     font-family: $font-family-poppins;
-                    padding: 5px 10px;
+                    padding: 5px 0px 5px 3rem;
                     outline: none;
                 }
             }
@@ -71,10 +79,16 @@
             }
         }
 
+        .input-box {
+            display: none;
+            left: -9999px;
+        }
+
         .checklist__additional {
             @include flex-row;
             gap: 5px;
             margin-bottom: 7px;
+            margin-top: 15px;
             align-items: center;
 
             label {
@@ -137,3 +151,4 @@
         }
     }
 }
+

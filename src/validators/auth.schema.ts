@@ -6,7 +6,8 @@ import { z } from 'zod';
     yang akan divalidasi oleh zod 
  */
 export const registerSchema = z.object({
-    name: z.string({ required_error: "Name is required" }) // name validation
+    name: 
+    z.string({ required_error: "Name is required" }) // name validation
     .min(1, { message: "Username is required" })
     .max(12, { message: "Max 12 characters allowed" }), 
     email: 
@@ -36,3 +37,15 @@ export const loginSchema = z.object({
 })
 
 export type LoginSchemaType = z.infer<typeof loginSchema> 
+
+/**
+    otp schema berisi payload (otp)
+ */
+export const otpSchema = z.object({
+    otp: 
+    z.string().length(6, { message: "OTP must be 6 digits"})
+    .regex(/^\d+$/, { message: "OTP must be a number"})
+})
+
+export type OtpSchemaType = z.infer<typeof otpSchema> 
+

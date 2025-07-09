@@ -31,8 +31,12 @@ export default function RegisterForm() {
     async function onSubmit(data: z.infer<typeof registerSchema>) {
         try {
             setLoading(true); // loading state
-            await handleRegister(data.name, data.email, data.password);
-            router.push(`/verify-email`); // jika token didapatkan maka redirect ke halaman verifikasi email
+            const isUserExist = await handleRegister(data.name, data.email, data.password); 
+            if (isUserExist) {
+                router.push(`/verify-email`); 
+            } else {
+                router.push('/login'); // jika user sudah ada, redirect ke login
+            }
         } catch (error) {
             devLog.failed("Register failed", error);
         } finally {
@@ -63,69 +67,87 @@ export default function RegisterForm() {
 
                 {/* Username input */}
                 <div className="input__area">
+                    <label htmlFor="name">Username</label>
                     <div className="input__box">
-                        <input 
-                            {...register("name")} 
-                            type="text" 
-                            placeholder="Username" 
-                            className="username__input"
-                            autoComplete="off"
-                            autoFocus
-                            spellCheck="false"
-                        />   
                         <Image 
                             src={"/misc/user.svg"}
                             alt="user input icon" 
                             width={25}
                             height={25}
                             className="input__icon"
-                        />                
+                        />                         
+                        <input 
+                            {...register("name")} 
+                            id="name"
+                            type="text" 
+                            placeholder="Username" 
+                            className="username__input"
+                            autoComplete="off"
+                            autoFocus
+                            spellCheck="false"
+                        />                  
                     </div>
                     {errors.name&& <p>{errors.name.message}</p>}                
                 </div>      
 
                 {/* Email input */} 
                 <div className="input__area">
+                    <label htmlFor="email">Email Address</label>
                     <div className="input__box">
-                        <input 
-                            {...register("email")} 
-                            type="email" 
-                            placeholder="Example@gmail" 
-                            className="email__input"
-                            autoComplete="off"
-                            spellCheck="false"
-                        />
                         <Image 
                             src={"/misc/email.svg"}
                             alt="email input icon" 
                             width={25}
                             height={25}
                             className="input__icon"
-                        />                     
+                        />                           
+                        <input 
+                            {...register("email")} 
+                            id="email"
+                            type="email" 
+                            name="email"
+                            placeholder="Example@gmail" 
+                            className="email__input"
+                            autoComplete="off"
+                            spellCheck="false"
+                        />                 
                     </div>
                     {errors.email&& <p>{errors.email.message}</p>}
                 </div>
 
                 {/* password input */}
                 <div className="input__area">
+                    <label htmlFor="password">Password</label>
                     <div className="input__box">
-                        <input 
-                            {...register("password")} 
-                            type="password" 
-                            placeholder="Password" 
-                            className="password__input"
-                            autoComplete="off"
-                            spellCheck="false"
-                        />
                         <Image 
                             src={"/misc/password.svg"}
                             alt="password input icon" 
                             width={25}
                             height={25}
                             className="input__icon"
-                        />                     
+                        />                         
+                        <input 
+                            {...register("password")} 
+                            id="password"
+                            type="password" 
+                            name="password"
+                            placeholder="Password" 
+                            className="password__input"
+                            autoComplete="off"
+                            spellCheck="false"
+                        />                    
                     </div>
                     {errors.password&& <p>{errors.password.message}</p>}                   
+                </div>
+
+                {/* honeypot */}
+                <div className="input-box">
+                    <input
+                        type="text"
+                        name="register"
+                        autoComplete="off"
+                        tabIndex={-1}
+                    />
                 </div>
 
                 {/* checklist privacy policy */}
