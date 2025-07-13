@@ -13,6 +13,7 @@ import Link from "next/link";
 import SSOButton from "../buttons/ssoButtons";
 import { useState } from "react";
 import { devLog } from "@take/lib/logger";
+import GalleryGrid from "@take/components/gallery/gallery";
 
 export default function RegisterForm() {
     // loading state
@@ -45,19 +46,11 @@ export default function RegisterForm() {
     };
 
     return(
-        <div className="register__from__container">
+        <main className="register__from__container">
 
             {/* image */}
             <div className="auth__page__image__wrapper">
-                <Image
-                    src="/main/restaurant.webp"
-                    alt="restaurant image"
-                    priority
-                    width={1000}
-                    height={1000}
-                    objectFit="cover"
-                    className="auth__page__image"
-                />
+                <GalleryGrid />
             </div>
 
             {/* Register form */}
@@ -178,7 +171,7 @@ export default function RegisterForm() {
                 </div>
 
             </form>
-        </div>
+        </main>
     )
 }
 

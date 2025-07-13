@@ -16,12 +16,12 @@
  */
 
 @mixin font-size-h1 {
- font-size: clamp(1.5rem, 0.5217rem + 4.3478vw, 4rem); // maks 64px
+ font-size: clamp(1.75rem, 0.5217rem + 4.3478vw, 4rem); // maks 64px
  font-weight: bold;
 }
 
 @mixin font-size-h2 {
-  font-size: clamp(1.25rem, 0.7609rem + 2.1739vw, 2rem); // maks 40px
+  font-size: clamp(1.75rem, 0.7609rem + 2.1739vw, 2rem); // maks 40px
   font-weight: medium;
 }
 

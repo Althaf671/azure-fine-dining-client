@@ -10,10 +10,18 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        margin-top: 40vh;
+        margin-top: 30vh;
         display: flex;
         gap: 10px;
         justify-content: center;
+
+        @include respond(md) {
+            margin-top: 30vh;
+        }
+
+        @include respond(lg) {
+            margin-top: 40vh;
+        }
     }
 
     .error__text {
@@ -23,10 +31,10 @@
     }
 
     .additional__info {
-        padding: 10px 10vw;
+        padding: 10px 5vw;
         color: $accent-color;
         opacity: 70%;
-        margin-top: 2rem;
+        margin-top: 20px;
         text-align: center;
     }
 }

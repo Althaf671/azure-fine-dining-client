@@ -2,7 +2,6 @@
 
 import LoadingStateAnimation2 from "@take/components/loading2"
 
-
 export default function RegisterButton({ loading }: { loading: boolean}) {
 
     if (loading) {
