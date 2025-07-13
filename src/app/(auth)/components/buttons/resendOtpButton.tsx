@@ -1,16 +1,17 @@
 // Login button
 
 import LoadingStateAnimation2 from "@take/components/loading2"
+import { handleResendVerificationEmail } from "@take/lib/api"
 
-export default function LoginButton({ loading }: { loading: boolean}) {
+export default function ResendOtpButton({ loading }: { loading: boolean}) {
 
     if (loading) {
         return (
             <button
-                type="submit"
+
                 className="login__button"
                 style={{ position: "relative"}}
-                disabled
+                disabled={loading}
             >
                 <LoadingStateAnimation2 />
             </button>
@@ -19,10 +20,10 @@ export default function LoginButton({ loading }: { loading: boolean}) {
 
     return (
         <button
-            type="submit"
             className="login__button"
+            onClick={handleResendVerificationEmail}
         >
-            Login 
+            Resend OTP code?
         </button>
     )
 };

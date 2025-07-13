@@ -5,9 +5,8 @@ import toast from "react-hot-toast";
 import { devLog } from "./logger";
 import axios from "axios";
 import axiosClient from "./axiosClient";
-
 //========== ambil Register endpoint(POST) dan handle Register ==========//
-export async function handleRegister(name: string, email: string, password: string) {
+export async function handleRegister(name: string, email: string, password: string) { // body
 
     /**
         Axios POST hasil input/payload ke backend dengan
@@ -41,6 +40,22 @@ export async function handleVerifyEmail(otp: string) {
         if (axios.isAxiosError(err)) {
             setTimeout(() => {
                 toast.error(err.response?.data?.message || "Verification failed", { duration: 3000 })
+            })
+        } else {
+            toast.error("Unexpected error");
+        }
+    }
+};
+
+//========== ambil resened verification email endpoint(POST) ==========//
+export async function handleResendVerificationEmail() { // tidak ada body karena hanya memanggil
+    try {
+        await axiosClient.post(`/resend-verification-email`);
+        toast.success("new OTP sent into ypur email!")
+    } catch (err: unknown) {
+        if (axios.isAxiosError(err)) {
+            setTimeout(() => {
+                toast.error(err.response?.data?.message || "Failed to resend OTP code", { duration: 3000 })
             })
         } else {
             toast.error("Unexpected error");

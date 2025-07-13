@@ -44,7 +44,7 @@ export type LoginSchemaType = z.infer<typeof loginSchema>
 export const otpSchema = z.object({
     otp: 
     z.string().length(6, { message: "OTP must be 6 digits"})
-    .regex(/^\d+$/, { message: "OTP must be a number"})
+    .regex(/^\d+$/, { message: "OTP must be a number"}),
 })
 
 export type OtpSchemaType = z.infer<typeof otpSchema> 

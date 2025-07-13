@@ -12,6 +12,7 @@ import z from "zod";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import SubmitButton from "../buttons/submitButton";
+import ResendOtpButton from "../buttons/resendOtpButton";
 
 export default function OtpForm() {
     const [otp, setOtp] = useState("");
@@ -38,6 +39,7 @@ export default function OtpForm() {
         } catch (error) {
             devLog.failed("OTP verification failed", error);
         } finally {
+            localStorage.removeItem("pending-email"); // hapus email dari localstorage
             setLoading(false);
         }
     };
@@ -52,10 +54,14 @@ export default function OtpForm() {
                     setValue("otp", value, { shouldValidate: true }); // update ke react-hook-form
                 }}
             numInputs={6} // maksimal 6 digit untuk input
-            inputType="tel" // tel lebih natural untuk otp
+            inputType="tel" 
             inputStyle={{
-                width: "3rem",
-                height: "3rem",
+                width: "10vw",        
+                height: "10vw",       
+                maxWidth: "60px",     
+                maxHeight: "60px",
+                minWidth: "38px",     
+                minHeight: "38px",
                 marginRight: "0.5rem",
                 fontSize: "1.5rem",
                 textAlign: "center",
@@ -74,11 +80,11 @@ export default function OtpForm() {
 
         {/* additional info */}
         <p className="additional__info">
-            To complete your registration and activate your Azure Fine Dining account, please enter the 6-digit One-Time Password 
-            (OTP) that has been sent to your registered email address. This unique code helps us verify your identity and secure 
-            your account from unauthorized access. The OTP will expire in 15 minutes, so please enter it promptly. If you did not 
-            receive the code, check your spam or junk folder, or request a new one. Never share this code with anyone, including 
-            Azure Fine Dining staff — it is strictly confidential and ensures the privacy and safety of your account.
+            Enter the 6-digit OTP sent to your email to verify your account.
+            The code is valid for 15 minutes.
+            Didn’t get it? Check your spam folder or resend the code.
+            Never share this code with anyone — it’s private.
+            <ResendOtpButton loading={loading} />
         </p>
     </form>
     )
