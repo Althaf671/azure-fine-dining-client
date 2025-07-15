@@ -1,3 +1,4 @@
+//========= file untuk custom logger ==========//
 /**
     Loggeer.ts berfungsi untuk menyatakan
     semua log di konsol hanya muncul saat developemnt
@@ -10,17 +11,22 @@
 export const devLog = {
   success: (...args: unknown[]) => {
     if (process.env.NODE_ENV === "development") {
-      console.log("[DEV]", ...args);
+      console.info("[DEV]", "✅", ...args);
     }
   },
   warn: (...args: unknown[]) => {
     if (process.env.NODE_ENV === "development") {
-      console.warn("[DEV]", ...args);
+      console.warn("[DEV]", "ℹ️", ...args);
     }
   },
   failed: (...args: unknown[]) => {
     if (process.env.NODE_ENV === "development") {
-      console.error("[DEV]", ...args);
+      console.error("[DEV]", "💥",...args);
+    }
+  },
+  info: (...args: unknown[]) => {
+    if (process.env.NODE_ENV === "development") {
+      console.warn("[DEV]", ...args);
     }
   },
 };
