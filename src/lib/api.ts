@@ -5,6 +5,9 @@ import toast from "react-hot-toast";
 import { devLog } from "./logger";
 import axios from "axios";
 import axiosClient from "./axiosClient";
+import { userDeviceLog } from "@take/utils/monitoring/userDeviceLog";
+
+
 //========== ambil Register endpoint(POST) dan handle Register ==========//
 export async function handleRegister(name: string, email: string, password: string) { // body
 
@@ -13,8 +16,9 @@ export async function handleRegister(name: string, email: string, password: stri
         payload: name, emai, password
     */
     try {
-        const res = await axiosClient.post("/register", { name, email, password })
-        devLog.success("Account registered")
+        const res = await axiosClient.post("/register", { name, email, password });
+        await userDeviceLog("REGISTER", "SUCCESS"); // ambil action dan status user device log
+        devLog.success("Account registered");
         setTimeout(() => {
             toast.success("Account registered", { duration: 3000 })
         });
@@ -35,6 +39,7 @@ export async function handleRegister(name: string, email: string, password: stri
 export async function handleVerifyEmail(otp: string) {
     try {
         const res = await axiosClient.post(`/verify-email`, { otp }); // panggil route
+        await userDeviceLog("VERIFY_EMAIL", "SUCCESS");
         return res.data;
     } catch (err: unknown) {
         if (axios.isAxiosError(err)) {
@@ -73,6 +78,7 @@ export async function handleLogin(email: string, password: string) {
     */
     try {
         const res = await axiosClient.post("/login", { email, password })
+        await userDeviceLog("LOGIN", "SUCCESS");
         devLog.success("Login success!", res.data.accessToken);
         return res.data.user.role; // return role agar bisa dipakai untuk split login route admin-user
     } catch (err: unknown) {
@@ -105,6 +111,7 @@ export async function getAdminPanel() {
     // axiosClient dengan method GET
     try {
         const res = await axiosClient.get("/admin-panel"); // deklarasi res yang berisi data dari admin.route.ts
+        await userDeviceLog("ADMIN_PANEL", "SUCCESS");
         setTimeout(() => {
             toast.success("Welcome to admin dashboard", { duration: 3000 })
         })

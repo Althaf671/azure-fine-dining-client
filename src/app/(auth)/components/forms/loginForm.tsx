@@ -15,6 +15,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { devLog } from "@take/lib/logger";
 import SSOButton from "../buttons/ssoButtons";
+import toast from "react-hot-toast";
 
 export default function LoginForm() {
     // deklarasi route
@@ -34,10 +35,13 @@ export default function LoginForm() {
     // panggil handleLogin
     async function onSubmit(data: z.infer<typeof loginSchema>) {
         try {
-            setLoading(true); // loading state berjalan
-            const role = await handleLogin(data.email, data.password);
-            if (!role) return; // jika login gagal maka return
-            if (role === ROLES.USER) {
+            setLoading(true); // loading state dijalankan
+            const role = await handleLogin(data.email, data.password); // logic ini di eksekusi
+
+            if (!role) {
+                devLog.failed("Login failed or no role returned");
+                toast.error("Login failed, try again");
+            } else if (role === ROLES.USER) {
                 router.push("/user-panel")
                 devLog.success("login - pushing to user panel");
             } else {

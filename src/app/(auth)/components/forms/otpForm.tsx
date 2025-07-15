@@ -14,10 +14,15 @@ import toast from "react-hot-toast";
 import SubmitButton from "../buttons/submitButton";
 import ResendOtpButton from "../buttons/resendOtpButton";
 
+// type loading state
+export type ButtonStatus = "loading" | "idle" | "cooldown"; // nanti refactor ke types
+
 export default function OtpForm() {
     const [otp, setOtp] = useState("");
-    // loading state
-    const [loading, setLoading] = useState(false);
+    // loading state untuk button verify dan resend OTP
+    const [isVerifying, setIsVerifying] = useState(false);
+    const [resendState, setResendState] = useState<ButtonStatus>("idle");
+    const [coolDownTime, setCooldownTime] = useState(30);
     const router = useRouter();
 
     const {
@@ -30,7 +35,7 @@ export default function OtpForm() {
 
     const onSubmit = async (data: OtpSchemaType) => {
         try {
-            setLoading(true); 
+            setIsVerifying(true); 
             const res = await handleVerifyEmail(data.otp);
             if (res?.message === "User email verified") {
                 toast.success("Email verified!");
@@ -40,7 +45,7 @@ export default function OtpForm() {
             devLog.failed("OTP verification failed", error);
         } finally {
             localStorage.removeItem("pending-email"); // hapus email dari localstorage
-            setLoading(false);
+            setIsVerifying(false);
         }
     };
 
@@ -76,15 +81,21 @@ export default function OtpForm() {
         {/* error mesage */}
         {errors.otp && <p className="error__text">{errors.otp.message}</p>}
 
-        <SubmitButton loading={loading} />
+        <SubmitButton loading={isVerifying} />
+
+        <ResendOtpButton
+            resendState={resendState}
+            setResendState={setResendState}
+            coolDownTime={coolDownTime}
+            setCoolDownTime={setCooldownTime}
+        />
 
         {/* additional info */}
         <p className="additional__info">
             Enter the 6-digit OTP sent to your email to verify your account.
-            The code is valid for 15 minutes.
-            Didn’t get it? Check your spam folder or resend the code.
+            The code is valid for <span style={{ fontWeight: "600"}}>15 minutes</span>. Didn’t 
+            get it? Check your spam folder or resend 
             Never share this code with anyone — it’s private.
-            <ResendOtpButton loading={loading} />
         </p>
     </form>
     )
