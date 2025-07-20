@@ -56,7 +56,9 @@ axiosClient.interceptors.response.use(
             !originalRequest._retry &&
             !originalRequest.url.includes("login") &&
             !originalRequest.url.includes("logout") &&
-            !originalRequest.url.includes("refresh-token") 
+            !originalRequest.url.includes("refresh-token")  &&
+            !originalRequest.url.includes("log-user-device")  
+            // lainnya
         ) {
             originalRequest._retry = true;
             try {

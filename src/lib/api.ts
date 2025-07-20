@@ -77,9 +77,17 @@ export async function handleLogin(email: string, password: string) {
         akan POST hasilnya ke backend untuk diverifikasi.
     */
     try {
+        devLog.warn("initiating handle login");
         const res = await axiosClient.post("/login", { email, password })
-        await userDeviceLog("LOGIN", "SUCCESS");
+        // eksekusi user device log 
+        try {
+            await userDeviceLog("LOGIN", "SUCCESS");
+        } catch (error: unknown) {
+            devLog.failed("user device log not executed", error)
+        }
+        devLog.warn("returning hanlde login data")
         devLog.success("Login success!", res.data.accessToken);
+        devLog.warn("ROLE:", res.data.user.role)
         return res.data.user.role; // return role agar bisa dipakai untuk split login route admin-user
     } catch (err: unknown) {
         if (axios.isAxiosError(err)) {

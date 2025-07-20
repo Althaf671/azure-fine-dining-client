@@ -7,7 +7,7 @@ import { userDeviceLogSchema } from "@take/validators/log.schema";
 
 /**
  * gabungan dari getFingerprintId dan getClientInfo yang akan
- * digunakan di route-route yang sudah ditentukan
+ * di mount di route-route yang sudah ditentukan
  */
 export async function userDeviceLog(action: string, status: string) {
     devLog.info("Creating user device info");
