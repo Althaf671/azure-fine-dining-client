@@ -1,6 +1,8 @@
 // API ts adalah tempat menampung logic untuk
 // menghubungkan frontend dan backend!
 
+// PR!!!! SEMUA CATCH BELUM ADA RETURN NYA!!!
+
 import toast from "react-hot-toast";
 import { devLog } from "./logger";
 import axios from "axios";
@@ -189,6 +191,40 @@ export async function handleLogout() {
         }       
     }
 };
+
+//==========  ambil forgot password endpoint (POST) ==========//
+export async function handleForgotPassword(email: string) {
+    try {
+        const res = await axiosClient.post("/forgot-password", { email });
+        setTimeout(() => {
+            toast.success("Reset password email sent! Check your inbox", { duration: 3000 });
+        });
+        return res.data;
+    } catch (err: unknown) {
+        if (axios.isAxiosError(err)) {
+            toast.error(err.response?.data?.message || "Failed to connect with this endpoint");
+        } else {
+            toast.error("Unexpected error")
+        }       
+    }
+};
+
+//==========  ambil reset password endpoint (POST) ==========//
+export async function handleResetPassword(newPassword: string, resetToken: string, email:string) {
+    try {
+        await axiosClient.post("/reset-password", {newPassword, resetToken, email});
+        setTimeout(() => {
+            toast.success("Password reset successfully!", { duration: 3000 });
+        });
+        return;
+    } catch (err: unknown) {
+        if (axios.isAxiosError(err)) {
+            toast.error(err.response?.data?.message || "Failed to connect with this endpoint");
+        } else {
+            toast.error("Unexpected error")
+        }       
+    }
+}; // TEST
 
 
 

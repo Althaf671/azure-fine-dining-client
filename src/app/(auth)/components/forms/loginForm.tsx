@@ -129,6 +129,7 @@ export default function LoginForm() {
                     />
                 </div>
 
+
                 {/* Submit button */}
                 <div className="submit__button">
                     <LoginButton loading={loading} />
@@ -139,6 +140,13 @@ export default function LoginForm() {
                     </div>
                     <SSOButton />                    
                 </div>
+
+                <Link 
+                    className="forgot__password__link"
+                    href="/forgot-password"
+                >
+                    Forgot Password?
+                </Link>
 
                 {/* Additional menu */}
                 <div className="additional__menu">
