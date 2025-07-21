@@ -13,6 +13,7 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import SubmitButton from "../buttons/submitButton";
 import ResendOtpButton from "../buttons/resendOtpButton";
+import Image from "next/image";
 
 // type loading state
 export type ButtonStatus = "loading" | "idle" | "cooldown"; // nanti refactor ke types
@@ -52,36 +53,51 @@ export default function OtpForm() {
     return (
     <form onSubmit={handleSubmit(onSubmit)} className="otp__form">
 
-        <OtpInput
-            value={otp} // value dari input adalah otp
-            onChange={(value) => {
-                setOtp(value); // simpan ke local state biar live update
-                    setValue("otp", value, { shouldValidate: true }); // update ke react-hook-form
+        {/* upper body */}
+        <div className="upper__body">
+            <Image 
+                src={"/misc/verifyEmail.svg"}
+                alt="email input icon" 
+                width={100}
+                height={100}
+                className="resetPwd__icon"
+            />
+            <h3>Verify Your Email</h3>  
+            <p className="additional__info">No worries, we&apos;ll send you reset instructions</p>           
+        </div>
+
+        <div className="inner__otp__container">
+            <OtpInput
+                value={otp} // value dari input adalah otp
+                onChange={(value) => {
+                    setOtp(value); // simpan ke local state biar live update
+                        setValue("otp", value, { shouldValidate: true }); // update ke react-hook-form
+                    }}
+                numInputs={6} // maksimal 6 digit untuk input
+                inputType="tel" 
+                inputStyle={{
+                    width: "10vw",        
+                    height: "10vw",       
+                    maxWidth: "60px",     
+                    maxHeight: "60px",
+                    minWidth: "38px",     
+                    minHeight: "38px",
+                    marginRight: "0.5rem",
+                    fontSize: "1.5rem",
+                    textAlign: "center",
+                    border: "1px solid #ccc",
+                    borderRadius: "5px",
                 }}
-            numInputs={6} // maksimal 6 digit untuk input
-            inputType="tel" 
-            inputStyle={{
-                width: "10vw",        
-                height: "10vw",       
-                maxWidth: "60px",     
-                maxHeight: "60px",
-                minWidth: "38px",     
-                minHeight: "38px",
-                marginRight: "0.5rem",
-                fontSize: "1.5rem",
-                textAlign: "center",
-                border: "1px solid #ccc",
-                borderRadius: "5px",
-            }}
-            shouldAutoFocus
-            containerStyle="otp__container"
-            renderInput={(props) => <input {...props} />}
-        />
+                shouldAutoFocus
+                containerStyle="otp__container"
+                renderInput={(props) => <input {...props} />}
+            />
 
-        {/* error mesage */}
-        {errors.otp && <p className="error__text">{errors.otp.message}</p>}
+            {/* error mesage */}
+            {errors.otp && <p className="error__text">{errors.otp.message}</p>}
 
-        <SubmitButton loading={isVerifying} />
+            <SubmitButton loading={isVerifying} />           
+        </div>
 
         <ResendOtpButton
             resendState={resendState}
@@ -93,9 +109,7 @@ export default function OtpForm() {
         {/* additional info */}
         <p className="additional__info">
             Enter the 6-digit OTP sent to your email to verify your account.
-            The code is valid for <span style={{ fontWeight: "600"}}>15 minutes</span>. Didn’t 
-            get it? Check your spam folder or resend 
-            Never share this code with anyone — it’s private.
+            The code is valid for <span style={{ fontWeight: "600"}}>15 minutes</span>.
         </p>
     </form>
     )

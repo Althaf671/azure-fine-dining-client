@@ -1,28 +1,26 @@
-// register button
-
 import LoadingStateAnimation2 from "@take/components/loading2"
 
-export default function RegisterButton({ loading }: { loading: boolean}) {
+export default function SubmitButtonResetPassword({ loading }: { loading: boolean}) {
 
     if (loading) {
         return (
             <button
                 type="submit"
-                className="register__button"
+                className="submitOnly__button"
                 style={{ opacity: "80%", cursor: "default" }}
                 disabled
             >
                 <LoadingStateAnimation2 />
             </button>
-        )
+        )        
     }
 
     return (
         <button
             type="submit"
-            className="register__button"
+            className="submitOnly__button"
         >
-            Register
+            Reset password
         </button>
     )
-}
+};

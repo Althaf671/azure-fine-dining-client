@@ -216,7 +216,7 @@
     .login__form {
         @include flex-column;
         width: 31vw;
-        margin: 15dvh 3.5rem 0 3.5rem;
+        margin: 15dvh 3.5rem 0 4.5rem;
 
          // breakpoints for big container
         @include respond("ssm") {
@@ -288,6 +288,13 @@
                 letter-spacing: 0.3px;
                 margin-top: 0.5px;
             }
+        }
+
+        .forgot__password__link {
+            @include font-size-information;
+            text-align: center;
+            text-decoration: underline;
+            margin-top: 1rem;
         }
 
         .input-box {
@@ -362,4 +369,101 @@
         }
     }
 }
+
+.forgot__password__container {
+  @include flex-column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 15vh;
+
+    .upper__body {
+        @include flex-column;
+        justify-content: center;
+        align-items: center;
+        margin: 2rem 0;
+
+        p {
+            margin: 0;
+            padding: 0;
+        }
+
+        h3 {
+            @include font-size-h3;
+            margin-top: 1.5rem;
+        }
+    }
+
+    .resetPwd__icon {
+        padding: 12px;
+        border-radius: 10px;
+        border: 2px dashed rgba(128, 128, 128, 0.3);
+        margin-bottom: 1rem;
+    }
+
+    .input__area {
+        @include flex-column;
+        min-width: 200px;
+        max-width: 350px ;
+        height: 5.75rem;
+        margin-top: 0.25rem;
+
+        label {
+            @include font-size-body;
+        }
+
+        .input__box {
+            position: relative;
+            width: 100%;
+            height: 3rem;
+            align-items: center;
+            background-color: white;
+            @include flex-row;
+
+            .input__icon {
+                position: absolute;
+                opacity: 80%;
+                border: none;
+                margin: 0 10px;
+            }
+
+            input {
+                border: none;
+                border-radius: 1px;
+                width: 95%;
+                height: 3rem;
+                @include font-size-button;
+                font-family: $font-family-poppins;
+                padding: 5px 0px 5px 3rem;
+                outline: none;
+            }
+        }
+
+        p {
+            color: red;
+            @include font-size-caption;
+            font-family: $font-family-poppins;
+            letter-spacing: 0.3px;
+            margin-top: 0.5px;
+        }
+    }
+    
+    .additional__info {
+        padding: 10px 5vw;
+        color: $accent-color;
+        opacity: 70%;
+        margin-top: 5px;
+        text-align: center;
+    }
+
+    .return__to__login a{
+        @include flex-row;
+        @include font-size-body;
+        width: fit-content;
+        align-items: center;
+        margin-top: 5rem;
+        opacity: 80%;
+        gap: 3px;
+    }
+}
+
 

@@ -5,20 +5,18 @@
     position: relative;
     justify-content: center;
     align-items: center;
-    width: 35%;
-    height: 3rem;
     padding: 0.5rem 0;
     background-color: $secondary-color;
     color: $primary-color;
     border: none;
     border-radius: 1px;
-    margin-top: 30px;
     @include font-size-button;
     font-family: $font-family-poppins;
     cursor: pointer;
     transition: all 0.3s ease-in-out;
     letter-spacing: 2.5px;
     box-shadow: 0 0 0 1px rgba(255,255,255,0.1), 0 4px 20px rgba(0,0,0,0.04);
+    margin-top: 1rem;
 
     @include respond(md) {
         width: 12.5vw;
@@ -39,6 +37,23 @@
     
     &:hover {
       opacity: 90%;  
+    }
+}
+
+.submitOnly__button:not(.primary) {
+    position: relative;
+    width: 100%;
+    height:3.5rem; 
+    padding: 0.6rem 2rem;
+    margin-top: 1.5rem;
+
+    .loadingState2 {
+        position: absolute; 
+        width: 100%;
+        height: 3.5rem; 
+        top: 50%;
+        left: 50%; 
+        transform: translate(-50%, -50%);
     }
 }
 

@@ -5,30 +5,52 @@
     @include flex-column;
     justify-content: center;
     align-items: center;
+    margin-top: 15vh;
 
-    .otp__container {
-        display: flex;
+    .upper__body {
+        @include flex-column;
         justify-content: center;
         align-items: center;
-        margin-top: 30vh;
-        display: flex;
-        gap: 10px;
-        justify-content: center;
+        margin: 2rem 0;
 
-        @include respond(md) {
-            margin-top: 30vh;
+        p {
+            margin: 0;
+            padding: 0;
         }
 
-        @include respond(lg) {
-            margin-top: 40vh;
+        h3 {
+            @include font-size-h3;
+            margin-top: 1.5rem;
         }
     }
 
-    .error__text {
-        color: red;
-        text-align: center;
-        margin-top: 8px;
+    .resetPwd__icon {
+        padding: 12px;
+        border-radius: 10px;
+        border: 2px dashed rgba(128, 128, 128, 0.3);
+        margin-bottom: 1rem;
     }
+
+    .inner__otp__container {
+        min-width: 200px;
+        max-width: 500px ;
+
+        .otp__container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .error__text {
+            color: red;
+            text-align: center;
+            margin-top: 8px;
+        }
+    }
+
 
     .additional__info {
         padding: 10px 5vw;

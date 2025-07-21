@@ -9,7 +9,7 @@ export default function LoginButton({ loading }: { loading: boolean}) {
             <button
                 type="submit"
                 className="login__button"
-                style={{ position: "relative"}}
+                style={{ opacity: "80%", cursor: "default" }}
                 disabled
             >
                 <LoadingStateAnimation2 />
