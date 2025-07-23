@@ -9,10 +9,17 @@ import { devLog } from "@take/lib/logger";
 import toast from "react-hot-toast";
 import Image from "next/image";
 import SubmitButtonResetPassword from "../buttons/submitButtonResetPassword";
+import { useParams, useSearchParams } from "next/navigation";
+
 
 export default function ResetPasswordForm() {
     // loading state
     const [loading, setLoading] = useState(false);
+    // ambil link dari URL
+    const searchParams = useSearchParams();
+    const params = useParams();
+    const token = params.token;
+    const email = searchParams?.get('email');
 
     // form validation oleh zod
     const {
@@ -24,9 +31,16 @@ export default function ResetPasswordForm() {
     });
 
     const onSubmit = async (data: resetPasswordSchemaType) => {
+        devLog.warn(email, token)
         try {
             setLoading(true);
-            await handleResetPassword(data.password);
+            // jika token dan email tidak ada
+            if (!token || !email) {
+                toast.error("Invalid reset link")
+                return;
+            }
+
+            await handleResetPassword(data.password, token as string, email);
         } catch (error) {
             devLog.failed("Failed submit", error);
             toast.error("Failed to submit");
