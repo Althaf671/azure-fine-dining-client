@@ -52,6 +52,7 @@ export async function handleVerifyEmail(otp: string) {
             toast.error("Unexpected error");
         }
     }
+    return null;
 };
 
 //========== ambil resened verification email endpoint(POST) ==========//
@@ -68,6 +69,7 @@ export async function handleResendVerificationEmail() { // tidak ada body karena
             toast.error("Unexpected error");
         }
     }
+    return null;
 };
 
 //========== ambil login endpoint(POST) dan handle login ==========//
@@ -107,7 +109,7 @@ export async function handleLogin(email: string, password: string) {
             toast.error("Unexpected error")
         }
     }
-    return undefined;
+    return null;
 };
 
 //========== ambil protected admin panel api(GET) ==========//
@@ -136,6 +138,7 @@ export async function getAdminPanel() {
             toast.error("Unexpected error")
         }
     }
+    return null;
 };
 
 //========== ambil protected user panel api(GET) ==========//
@@ -157,6 +160,7 @@ export async function getUserPanel() {
             toast.error("Unexpected error")
         }
     }
+    return null;
 };
 
 //==========  ambil refresh token api/token rotation (POST) ==========//
@@ -172,6 +176,7 @@ export async function getRefreshToken() {
             toast.error("Unexpected error")
         }     
     }
+    return null;
 };
 
 //==========  ambil logout api/endpoint (POST) ==========//
@@ -190,6 +195,7 @@ export async function handleLogout() {
             toast.error("Unexpected error")
         }       
     }
+    return null;
 };
 
 //==========  ambil forgot password endpoint (POST) ==========//
@@ -207,6 +213,7 @@ export async function handleForgotPassword(email: string) {
             toast.error("Unexpected error")
         }       
     }
+    return null;
 };
 
 //==========  ambil reset password endpoint (POST) ==========//
@@ -224,6 +231,7 @@ export async function handleResetPassword(newPassword: string, resetToken: strin
             toast.error("Unexpected error")
         }       
     }
+    return null;
 }; // TEST
 
 

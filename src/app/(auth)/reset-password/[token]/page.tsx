@@ -2,7 +2,7 @@
 
 import ResetPasswordForm from "../../components/forms/resetPwdForm";;
 
-export default function LoginPage() {
+export default function ResetPasswordPage() {
 
     return (
         <main>
