@@ -1,10 +1,10 @@
 //========= file Axios Client ==========//
 // semua fetch akan otomatis dengan csrf dan cookie
-import getCookie from "@take/helper/cookie";
 import axios from "axios";
 import { getRefreshToken } from "./api";
 import { devLog } from "./logger";
 import toast from "react-hot-toast";
+import getCookie from "@take/helper/cookie";
 
 
 // Backend API url
@@ -20,7 +20,7 @@ const axiosClient = axios.create({
     baseURL: API_URL + '/api', // backend URL + APIs/*
     withCredentials: true, // true agar cookie(httpOnly) dan isinya termasuk refreshToken ikut
     headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
     },
 });
 
@@ -30,12 +30,17 @@ const axiosClient = axios.create({
 */
 axiosClient.interceptors.request.use(
     (config) => {
-        // deklarasi csrfToken, getCookie(.ts) mengambil crsf_token
-        const csrfToken = getCookie("csrf_token");
+        // deklarasi csrfToken, getCookie(.ts) mengambil crsfToken
+        devLog.warn("CSRF token from cookie:", getCookie("csrfToken"));
+        const csrfToken = getCookie("csrfToken");
 
-        if (csrfToken && config.method !== "get") { // fetch dengan method GET tidak akan diinject crsf token
-            config.headers["x-csrf-token"] = csrfToken;
-        } 
+        devLog.warn("injecting csrf token to headers");
+        if (csrfToken && config.method !== "GET") { // fetch dengan method GET tidak akan diinject crsf token
+            config.headers["X-CSRF-Token"] = csrfToken;
+            devLog.success("csrf token:",csrfToken)
+        } else {
+            devLog.info("no csrf token")
+        }
 
         return config;
     },

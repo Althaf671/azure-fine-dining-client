@@ -63,6 +63,7 @@ export function useProtectedPage(
         hasFatchedRef.current = true; 
 
         // jalankan fungsi fetch data di atas
+
         fetchData();
     }, [fetchData]);
 

@@ -41,7 +41,7 @@ export async function handleRegister(name: string, email: string, password: stri
 export async function handleVerifyEmail(otp: string) {
     try {
         const res = await axiosClient.post(`/verify-email`, { otp }); // panggil route
-        await userDeviceLog("VERIFY_EMAIL", "SUCCESS");
+        //await userDeviceLog("VERIFY_EMAIL", "SUCCESS");
         return res.data;
     } catch (err: unknown) {
         if (axios.isAxiosError(err)) {
@@ -55,7 +55,7 @@ export async function handleVerifyEmail(otp: string) {
     return null;
 };
 
-//========== ambil resened verification email endpoint(POST) ==========//
+//========== ambil resend verification email endpoint(POST) ==========//
 export async function handleResendVerificationEmail() { // tidak ada body karena hanya memanggil
     try {
         await axiosClient.post(`/resend-verification-email`);
@@ -83,12 +83,14 @@ export async function handleLogin(email: string, password: string) {
     try {
         devLog.warn("initiating handle login");
         const res = await axiosClient.post("/login", { email, password })
+        await axiosClient.get("/csrf-token")
         // eksekusi user device log 
-        try {
+        /*try {
             await userDeviceLog("LOGIN", "SUCCESS");
         } catch (error: unknown) {
-            devLog.failed("user device log not executed", error)
-        }
+            devLog.warn("user device log not executed", error)
+        }*/
+
         devLog.warn("returning hanlde login data")
         devLog.success("Login success!", res.data.accessToken);
         devLog.warn("ROLE:", res.data.user.role)
@@ -191,6 +193,42 @@ export async function handleLogout() {
     } catch (err: unknown) {
         if (axios.isAxiosError(err)) {
             toast.error(err.response?.data?.message || "Logout failed")
+        } else {
+            toast.error("Unexpected error")
+        }       
+    }
+    return null;
+};
+
+//==========  ambil csrf token endpoint (GET) ==========//
+/*export const getAndSetCsrfToken = async () => {
+  try {
+    const res = await axiosClient.get("/csrf-token"); // ini route kamu
+    const csrfToken = res.data.csrfToken;
+
+    if (!csrfToken) throw new Error("No csrf token in response");
+
+    // Set ke header default agar semua request pakai ini
+    axiosClient.defaults.headers.common["X-CSRF-Token"] = csrfToken;
+
+    console.log("✅ CSRF token injected to headers:", csrfToken);
+  } catch (err) {
+    console.error("💥 Gagal inject CSRF token:", err);
+  }
+};*/
+
+//========== ambil login google endpoint (POST) ==========//
+export async function handleGoogleLogin(credential: string) {
+    try {
+        const res = await axiosClient.post("/login-google", { credential });
+        setTimeout(() => {
+            toast.success("You've logged in with Google!", { duration: 3000 });
+        });
+        devLog.success(res);
+        return res.data;
+    } catch (err: unknown) {
+        if (axios.isAxiosError(err)) {
+            toast.error(err.response?.data?.message || "Failed to connect with this endpoint");
         } else {
             toast.error("Unexpected error")
         }       

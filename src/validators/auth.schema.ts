@@ -34,7 +34,7 @@ export const loginSchema = z.object({
     .refine(val => /[a-z]/.test(val), { message: "Password must be atleast 1 lowercase"}) // hurus terdiri dari 1 huruf kecil
     .refine(val => /[0-9]/.test(val), { message: "Password must be atleast 1 number"}) // hurus terdiri dari 1 angka
     .refine(val => /[^A-Za-z0-9]/.test(val), { message: "Password must be atleast a symbol"}) // hurus terdiri dari sebuah tanda baca
-}).strict();
+});
 
 export type LoginSchemaType = z.infer<typeof loginSchema> 
 

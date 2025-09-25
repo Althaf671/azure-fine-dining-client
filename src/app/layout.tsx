@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Lora, Poppins } from "next/font/google";
 import { Toaster } from 'react-hot-toast';
 import "../styles/main.scss";
+import Script from "next/script";
 
 const poppins = Poppins({
   variable: "--font-poppins",
@@ -34,6 +35,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${poppins.variable} ${lora.variable}`}>
+          <Script src="https://accounts.google.com/gsi/client" async></Script>
           <Toaster position="bottom-right" />
           {children}
       </body>

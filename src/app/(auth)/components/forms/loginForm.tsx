@@ -15,7 +15,6 @@ import Link from "next/link";
 import { useState } from "react";
 import { devLog } from "@take/lib/logger";
 import SSOButton from "../buttons/ssoButtons";
-import toast from "react-hot-toast";
 
 export default function LoginForm() {
     // deklarasi route
@@ -37,16 +36,12 @@ export default function LoginForm() {
         try {
             setLoading(true); // loading state dijalankan
             const role = await handleLogin(data.email, data.password); // logic ini di eksekusi
-
-            if (!role) {
-                devLog.failed("Login failed or no role returned");
-                toast.error("Login failed, try again");
-            } else if (role === ROLES.USER) {
-                router.push("/user-panel")
+             if (role === ROLES.USER) {
+                router.push("/admin-panel")
                 devLog.success("login - pushing to user panel");
             } else {
-                router.push("/admin-panel")
-                devLog.success("login - pushing to admin panel");
+                router.push("/user-panel")
+                devLog.success("login - pushing to user panel");
             }    
         } catch (error) {
             devLog.failed("failed to login", error);
@@ -137,9 +132,10 @@ export default function LoginForm() {
                         <hr className="hr__left"/>
                         <span>or</span>
                         <hr className="hr__right" />
-                    </div>
-                    <SSOButton />                    
+                    </div>                  
                 </div>
+
+                <SSOButton />  
 
                 <Link 
                     className="forgot__password__link"
